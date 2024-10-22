@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据标签</title>
+</head>
+<body>
+<div class="ui container">
+    <div class="ui form">
+        <form action="" method="post">
+            {% csrf_token %}
+        <h3 class="ui header" id="data_filter">Tag Filter</h3>
+          <div class="field">
+              <div class="sixteen wide field">
+                <select name ="dimension_select" id="dimension_select" class="ui fluid search dropdown">
+                    {% for key, value in mselect_dict.items %}
+                        {% if value.select == 'date' %}
+                            <option value="{{ value.select }}" selected>{{ key }}</option>
+                        {% else %}
+                            <option value ="{{ value.select }}">{{ key }}</option>
+                        {% endif %}
+
+                    {% endfor %}
+                </select>
+            </div>
+          </div>
+
+            <div class="field">
+             <div class="sixteen wide field">
+                <select name ="dimension_select" id="dimension_select" class="ui fluid search dropdown">
+                    {% for key, value in mselect_dict.items %}
+                        {% if value.select == 'province' %}
+                            <option value="{{ value.select }}" selected>{{ key }}</option>
+                        {% else %}
+                            <option value ="{{ value.select }}">{{ key }}</option>
+                        {% endif %}
+
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+            <br>
+            <div class="ui buttons">
+                <input class="ui black button" type='button' id='AJAX_get' value="查询"/>
+            </div>
+        </form>
+    </div>
+
+    <div class="ui segments">
+        {% csrf_token %}
+        <div class="ui segment">
+            <a href= "{% url 'cptable' %}">全国（省级）疫情情况</a>
+        </div>
+        <div class="ui segment">
+            <a href= "{% url 'cttable' %}">全国（市级）疫情情况</a>
+        </div>
+        <div class="ui segment">
+            <a href= "{% url 'newtable' %}">新增人数</a>
+        </div>
+        <div class="ui segment">
+            <a href= "{% url 'weibocomment' %}">微博评论</a>
+        </div>
+        <div class="ui segment">
+            <a href= "{% url 'weiboword' %}">微博词频</a>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var dict = {{ mselect_dict|safe }};
+    // 还是转义问题，在Django模板中遇到带有{}的html代码必须使用replace这种方式处理
+    var url = "{% url 'search' 'COLUMNPLACEHOLDER' 'QUERYPLACEHOLDER' %}".replace(
+        'QUERYPLACEHOLDER', '{query}'
+    );
+    // jQuery语法遍历所有多选框
+    $('.ui.fluid.search.dropdown.selection.multiple').each(function () {
+        // Semantic UI语法获得多选框默认文本
+        var text = $(this).dropdown('get default text');
+        // 根据字典倒推该多选框是哪个字段
+        var column = dict[text]['select'];
+        $(this).dropdown(
+            {
+                apiSettings: {
+                    // 用下方URL从后端返回查询后的json
+                    url: url.replace('COLUMNPLACEHOLDER', column)
+                },
+                // 输入至少2个字符后才query
+                minCharacters : 2
+            })
+        ;
+    })
+</script>
+
+<script>
+    $('.ui.fluid.search.dropdown')
+        .dropdown({ fullTextSearch: true });
+</script>
+</body>
+</html>

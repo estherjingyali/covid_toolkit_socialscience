@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static '/css/dataTables.semanticui.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/semantic.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/buttons.dataTables.css' %}">
+
+    <script type="text/javascript" src="{% static '/js/jszip.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/vfs_fonts.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/pdfmake.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/dataTables.semanticui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/semantic.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/dataTables.buttons.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/buttons.html5.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/buttons.print.js' %}"></script>
+    <script src="{% static '/js/echarts.min.js' %}"></script>
+    <title>统计分析结果</title>
+</head>
+<body>
+{% include 'panelviews/header.html' %}
+<div id="pusher" class="pusher" style="padding-top:50px">
+    <div class="ui celled grid">
+        <!-- 左边3/16为filter页面, include -->
+        <div class="three wide column">
+            {% include 'panelviews/filter.html' %}
+        </div>
+
+        <!-- 右边13/16为display页面, 预留block -->
+        <div class="thirteen wide column">
+            {% extends "panelviews/analyse.html" %}
+            {% block display %}
+                {{ data }}
+            {% endblock display %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

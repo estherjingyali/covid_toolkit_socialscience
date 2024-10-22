@@ -1,0 +1,16 @@
+# Ignore compiled Python files
+*.pyc
+*.pyo
+__pycache__/
+
+/media/
+/static/
+
+/panel/migrations/*
+/panel/csvfiles/*
+/panel/pythonfiles/*
+
+venv/
+env/
+
+*.sqlite3

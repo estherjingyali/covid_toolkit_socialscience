@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static '/css/dataTables.semanticui.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/semantic.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/buttons.dataTables.css' %}">
+
+    <script type="text/javascript" src="{% static '/js/jszip.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/vfs_fonts.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/pdfmake.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/dataTables.semanticui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/semantic.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/dataTables.buttons.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/buttons.html5.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/buttons.print.js' %}"></script>
+    <title>ResultCorr</title>
+</head>
+<body>
+{% include 'panelviews/header.html' %}
+<div id="pusher" class="pusher" style="padding-top:50px">
+    <div class="ui celled grid">
+        <!-- 左边3/16为filter页面, include -->
+        <div class="three wide column">
+            {% include 'panelviews/filter.html' %}
+        </div>
+
+        <!-- 右边13/16为display页面, 预留block -->
+        <div class="thirteen wide column">
+            {% block display %}
+                <div class="ui pointing secondary menu">
+                    <a class="item" data-tab="total"><i class="table"></i>数据表格</a>
+                    <a class="item active" data-tab="statistic"><i class="chart bar"></i>统计分析</a>
+                    <a class="item" data-tab="export"><i class="download icon"></i>结果导出</a>
+                </div>
+
+             <div class="ui tab segment" data-tab="statistic">
+                    <a href="{% url 'correlation' %}" class='ui big label'>Correlation</a>
+                    <a href="{% url 'ttest' %}" class='ui big label'>T-Test</a>
+                    <a href="{% url 'anova' %}" class='ui big label'>ANOVA</a>
+                    <a href="{% url 'regression' %}" class='ui big label'>Linear Regression</a>
+                <div class ="ui divider"></div>
+                    <h3 class="ui header">
+                        <div class="content">
+                            Result
+                        </div>
+                    </h3>
+                    <div class ="ui divider"></div>
+                <div class="ui container" id='result' style="width: 100%; overflow-x: scroll; overflow-y: hidden;">
+                    <div class="show_img">
+                          <img src="data:image/png;base64,{{ plot_url }}" alt="相关分析"/>
+                    </div>
+                </div>
+                </div>
+
+
+
+ <script>
+$('.pointing.secondary.menu .item').tab();
+ </script>
+            {% endblock display %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
